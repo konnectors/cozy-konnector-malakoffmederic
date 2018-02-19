@@ -4,7 +4,8 @@
   "description": "Import your Malakoff Mederic bills",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
+    "url":
+      "git+https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
   "keywords": [],
   "author": "",
@@ -22,8 +23,11 @@
     "standalone:replay": "REPLAY=replay cozy-konnector-standalone src/index.js",
     "dev": "cozy-konnector-dev src/index.js",
     "build": "webpack",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git",
-    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
+    "format": "prettier --write '**/*.{js,json}'",
+    "deploy":
+      "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git",
+    "deploy:prod":
+      "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
   "dependencies": {
     "cozy-konnector-libs": "3.3.0",
@@ -32,6 +36,7 @@
   "devDependencies": {
     "copy-webpack-plugin": "4.4.1",
     "git-directory-deploy": "1.5.1",
+    "prettier": "1.10.2",
     "webpack": "3.11.0"
   }
 }
