@@ -7,6 +7,12 @@
     "url": "git+https://github.com/cozy/cozy-konnector-malakoffmederic.git"
   },
   "main": "index.js",
+  "renovate": {
+    "extends": ["config:base"],
+    "patch": {
+      "automerge": true
+    }
+  },
   "scripts": {
     "standalone": "DEBUG=* cozy-konnector-standalone",
     "standalone:record": "REPLAY=record cozy-konnector-standalone",
