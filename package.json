@@ -24,6 +24,7 @@
     "dev": "cozy-konnector-dev src/index.js",
     "build": "webpack",
     "format": "prettier --write '**/*.{js,json}'",
+    "precommit": "pretty-quick --staged",
     "deploy":
       "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git",
     "deploy:prod":
@@ -36,7 +37,9 @@
   "devDependencies": {
     "copy-webpack-plugin": "4.4.1",
     "git-directory-deploy": "1.5.1",
+    "husky": "0.14.3",
     "prettier": "1.10.2",
+    "pretty-quick": "1.4.1",
     "webpack": "3.11.0"
   }
 }
