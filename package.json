@@ -4,8 +4,11 @@
   "description": "Import your Malakoff Mederic bills",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cozy/cozy-konnector-malakoffmederic.git"
+    "url": "git+https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
+  "keywords": [],
+  "author": "",
+  "license": "AGPL-3.0",
   "main": "index.js",
   "renovate": {
     "extends": ["config:base"],
@@ -20,10 +23,8 @@
     "dev": "cozy-konnector-dev",
     "build": "webpack",
     "deploy:travis": "git-directory-deploy --username Cozy --email contact@cozycloud.cc --directory build/ --repo=https://$GITHUB_TOKEN@github.com/cozy/cozy-konnector-malakoffmederic.git",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/cozy/cozy-konnector-malakoffmederic.git"
+    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "cozy-konnector-libs": "3.3.0",
     "moment": "^2.18.1"
