@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "renovate": {
     "extends": ["config:base"],
     "patch": {
@@ -17,10 +17,10 @@
     }
   },
   "scripts": {
-    "standalone": "DEBUG=* cozy-konnector-standalone",
-    "standalone:record": "REPLAY=record cozy-konnector-standalone",
-    "standalone:replay": "REPLAY=replay cozy-konnector-standalone",
-    "dev": "cozy-konnector-dev",
+    "standalone": "DEBUG=* cozy-konnector-standalone src/index.js",
+    "standalone:record": "REPLAY=record cozy-konnector-standalone src/index.js",
+    "standalone:replay": "REPLAY=replay cozy-konnector-standalone src/index.js",
+    "dev": "cozy-konnector-dev src/index.js",
     "build": "webpack",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git",
     "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
