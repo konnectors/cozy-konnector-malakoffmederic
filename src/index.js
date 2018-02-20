@@ -54,7 +54,8 @@ function fetchLoginPage() {
     url: `${baseUrl}/espaceClient/LogonAccess.do`,
     resolveWithFullResponse: true
   }).catch(err => {
-    console.log(err && err.message, "fetchLoginPage Failed");
+    log("info", "fetchLoginPage Failed");
+    log("info", err && err.message);
     throw new Error(errors.VENDOR_DOWN);
   });
 }
@@ -148,7 +149,7 @@ function parseRemboursements($) {
     $subrows.each(function() {
       const data = $(this)
         .find("td, th")
-        .map(function(index, elem) {
+        .map(function() {
           return $(this)
             .text()
             .trim();
