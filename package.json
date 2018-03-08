@@ -45,7 +45,7 @@
     "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
   "dependencies": {
-    "cozy-konnector-libs": "3.5.2",
+    "cozy-konnector-libs": "3.5.3",
     "moment": "^2.18.1"
   },
   "devDependencies": {
