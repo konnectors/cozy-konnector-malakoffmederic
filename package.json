@@ -45,11 +45,11 @@
     "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
   },
   "dependencies": {
-    "cozy-konnector-libs": "3.3.0",
+    "cozy-konnector-libs": "3.5.2",
     "moment": "^2.18.1"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "4.4.3",
+    "copy-webpack-plugin": "4.5.0",
     "eslint": "4.18.2",
     "eslint-config-prettier": "2.9.0",
     "git-directory-deploy": "1.5.1",
