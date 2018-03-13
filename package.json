@@ -18,6 +18,10 @@
   "eslintIgnore": [
     "build"
   ],
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
   "scripts": {
     "standalone": "DEBUG=* cozy-konnector-standalone src/index.js",
     "standalone:record": "REPLAY=record cozy-konnector-standalone src/index.js",

@@ -2,7 +2,7 @@
 // In the future, will be set by the stack
 process.env.SENTRY_DSN =
   process.env.SENTRY_DSN ||
-  "https://f1c5b0de1fb04c17bd67c6f747465675:864038d84e5640efbb8ee73c24b44115@sentry.cozycloud.cc/18";
+  'https://f1c5b0de1fb04c17bd67c6f747465675:864038d84e5640efbb8ee73c24b44115@sentry.cozycloud.cc/18'
 
 const {
   BaseKonnector,
@@ -11,20 +11,20 @@ const {
   saveBills,
   errors,
   retry
-} = require("cozy-konnector-libs");
-const moment = require("moment");
+} = require('cozy-konnector-libs')
+const moment = require('moment')
 
-let request = requestFactory();
-const j = request.jar();
+let request = requestFactory()
+const j = request.jar()
 request = requestFactory({
   // debug: true,
   jar: j,
   json: false
-});
+})
 
-const baseUrl = "https://extranet.malakoffmederic.com";
+const baseUrl = 'https://extranet.malakoffmederic.com'
 
-module.exports = new BaseKonnector(start);
+module.exports = new BaseKonnector(start)
 
 function start(fields) {
   return retry(fetchLoginPage, {
@@ -36,7 +36,7 @@ function start(fields) {
         interval: 5000,
         throw_original: true,
         // do not retry if we get the LOGIN_FAILED error code
-        predicate: err => err.message !== "LOGIN_FAILED"
+        predicate: err => err.message !== 'LOGIN_FAILED'
       })
     )
     .then(fetchRemboursements)
@@ -44,9 +44,9 @@ function start(fields) {
     .then(entries =>
       saveBills(entries, fields, {
         timeout: Date.now() + 60 * 1000,
-        identifiers: ["Malakoff"]
+        identifiers: ['Malakoff']
       })
-    );
+    )
 }
 
 function fetchLoginPage() {
@@ -54,49 +54,49 @@ function fetchLoginPage() {
     url: `${baseUrl}/espaceClient/LogonAccess.do`,
     resolveWithFullResponse: true
   }).catch(err => {
-    log("info", "fetchLoginPage Failed");
-    log("info", err && err.message);
-    throw new Error(errors.VENDOR_DOWN);
-  });
+    log('info', 'fetchLoginPage Failed')
+    log('info', err && err.message)
+    throw new Error(errors.VENDOR_DOWN)
+  })
 }
 
 function logIn(fields, resp) {
-  log("info", "Logging in");
+  log('info', 'Logging in')
 
   // Sometimes the login page is an error and does not give cookies then we retry later
-  if (!Array.isArray(resp.headers["set-cookie"]))
-    throw new Error(errors.VENDOR_DOWN);
+  if (!Array.isArray(resp.headers['set-cookie']))
+    throw new Error(errors.VENDOR_DOWN)
 
   // This id is stored in the cookie and used to check the log in
-  let httpSessionId = resp.headers["set-cookie"][0];
-  httpSessionId = httpSessionId.split(";")[0];
-  httpSessionId = httpSessionId.split("=")[1];
+  let httpSessionId = resp.headers['set-cookie'][0]
+  httpSessionId = httpSessionId.split(';')[0]
+  httpSessionId = httpSessionId.split('=')[1]
 
-  log("debug", httpSessionId, "httpSessionId");
+  log('debug', httpSessionId, 'httpSessionId')
 
   return request({
-    method: "POST",
+    method: 'POST',
     url: `${baseUrl}/dwr/call/plaincall/__System.generateId.dwr`,
     body: `callCount=1\nc0-scriptName=__System\nc0-methodName=generateId\nc0-id=0\nbatchId=0\ninstanceId=0\npage=%2FespaceClient%2FLogonAccess.do\nscriptSessionId=\n`
   })
     .then(body => {
-      const regexp = /dwr.engine.remote.handleCallback\(.*\)/g;
-      const matches = body.match(regexp);
-      const tokens = matches[0].split('"');
-      tokens.pop();
-      const scriptSessionId = tokens.pop();
+      const regexp = /dwr.engine.remote.handleCallback\(.*\)/g
+      const matches = body.match(regexp)
+      const tokens = matches[0].split('"')
+      tokens.pop()
+      const scriptSessionId = tokens.pop()
 
-      return scriptSessionId;
+      return scriptSessionId
     })
     .then(scriptSessionId => {
-      log("debug", scriptSessionId, "scriptSessionId");
-      let cookie = request.cookie(`DWRSESSIONID=${scriptSessionId}`);
+      log('debug', scriptSessionId, 'scriptSessionId')
+      let cookie = request.cookie(`DWRSESSIONID=${scriptSessionId}`)
       j.setCookie(
         cookie,
         `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`
-      );
+      )
       return request({
-        method: "POST",
+        method: 'POST',
         url: `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`,
         body: `callCount=1\nnextReverseAjaxIndex=0\nc0-scriptName=InternauteValidator\nc0-methodName=checkConnexion\nc0-id=0\nc0-param0=string:${encodeURIComponent(
           fields.login
@@ -105,80 +105,80 @@ function logIn(fields, resp) {
         )}\nc0-param2=string:\nbatchId=1\ninstanceId=0\npage=%2FespaceClient%2FLogonAccess.do\nscriptSessionId=${scriptSessionId}/${tokenify(
           new Date().getTime()
         )}-${tokenify(Math.random() * 1e16)}\n`
-      });
+      })
     })
     .then(body => {
-      if (body.indexOf("LOGON_KO") > -1) {
-        throw new Error(errors.LOGIN_FAILED);
+      if (body.indexOf('LOGON_KO') > -1) {
+        throw new Error(errors.LOGIN_FAILED)
       } else {
-        log("info", "LOGIN_OK");
+        log('info', 'LOGIN_OK')
       }
-    });
+    })
 }
 
 function fetchRemboursements() {
   request = requestFactory({
     cheerio: true
-  });
-  return request(`${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`);
+  })
+  return request(`${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`)
 }
 
 function parseRemboursements($) {
-  const result = [];
+  const result = []
 
   // get the list of reimbursements rows
-  $("#tableauxRemboursements > .body > .toggle").each(function() {
-    const $header = $(this).find(".headerRemboursements");
+  $('#tableauxRemboursements > .body > .toggle').each(function() {
+    const $header = $(this).find('.headerRemboursements')
 
-    const amount = convertAmount($header.find(".montant").text());
-    const date = moment($header.find("#datePaiement").val(), "x");
+    const amount = convertAmount($header.find('.montant').text())
+    const date = moment($header.find('#datePaiement').val(), 'x')
     const isThirdPartyPayer =
       $(this)
-        .find(".dateEmission")
+        .find('.dateEmission')
         .text()
-        .indexOf("professionnels de santé") !== -1;
+        .indexOf('professionnels de santé') !== -1
 
     // unique id for reimbursement
-    const idReimbursement = $header.find("#idDecompte").val();
+    const idReimbursement = $header.find('#idDecompte').val()
 
-    let fileurl = $header.find("#tbsRembExportPdf").attr("href");
-    fileurl = `${baseUrl}${fileurl}`;
+    let fileurl = $header.find('#tbsRembExportPdf').attr('href')
+    fileurl = `${baseUrl}${fileurl}`
 
-    const $subrows = $(this).find("> .body tbody tr");
-    let beneficiary = null;
+    const $subrows = $(this).find('> .body tbody tr')
+    let beneficiary = null
     $subrows.each(function() {
       const data = $(this)
-        .find("td, th")
+        .find('td, th')
         .map(function() {
           return $(this)
             .text()
-            .trim();
+            .trim()
         })
-        .get();
+        .get()
 
       if (data.length === 1) {
         // we have a beneficiary line
-        beneficiary = data[0];
+        beneficiary = data[0]
       } else {
         // a normal line with data
-        const originalAmount = convertAmount(data[data.length - 2]);
+        const originalAmount = convertAmount(data[data.length - 2])
         const originalDate = moment(
           $(this)
-            .find("#datePrestation")
+            .find('#datePrestation')
             .val(),
-          "x"
-        ).toDate();
-        const subtype = data[1];
+          'x'
+        ).toDate()
+        const subtype = data[1]
         // unique id for the prestation line. May be usefull
         const idPrestation = $(this)
-          .find("#idPrestation")
-          .val();
-        const socialSecurityRefund = convertAmount(data[3]);
+          .find('#idPrestation')
+          .val()
+        const socialSecurityRefund = convertAmount(data[3])
         result.push({
-          type: "health_costs",
+          type: 'health_costs',
           isThirdPartyPayer,
           subtype,
-          vendor: "Malakoff Mederic",
+          vendor: 'Malakoff Mederic',
           date: date.toDate(),
           fileurl,
           filename: getFileName(date, idReimbursement),
@@ -193,32 +193,32 @@ function parseRemboursements($) {
           originalAmount,
           originalDate,
           isRefund: true
-        });
+        })
       }
-    });
-  });
+    })
+  })
 
-  return result;
+  return result
 }
 
 function getFileName(date, idDecompte) {
   // you can have multiple reimbursements for the same day
-  return `${date.format("YYYYMMDD")}_${idDecompte}_malakoff_mederic.pdf`;
+  return `${date.format('YYYYMMDD')}_${idDecompte}_malakoff_mederic.pdf`
 }
 
 function convertAmount(amount) {
-  amount = amount.replace(" €", "").replace(",", ".");
-  return parseFloat(amount);
+  amount = amount.replace(' €', '').replace(',', '.')
+  return parseFloat(amount)
 }
 
 function tokenify(number) {
-  var tokenbuf = [];
+  var tokenbuf = []
   var charmap =
-    "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*$";
-  var remainder = number;
+    '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*$'
+  var remainder = number
   while (remainder > 0) {
-    tokenbuf.push(charmap.charAt(remainder & 0x3f));
-    remainder = Math.floor(remainder / 64);
+    tokenbuf.push(charmap.charAt(remainder & 0x3f))
+    remainder = Math.floor(remainder / 64)
   }
-  return tokenbuf.join("");
+  return tokenbuf.join('')
 }
