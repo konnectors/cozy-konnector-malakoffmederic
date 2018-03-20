@@ -1,33 +1,47 @@
 
 const moment = require('moment')
 const { baseUrl } = require('./common')
+const { scrape } = require('cozy-konnector-libs')
 
 
 function parseRemboursements($, getRequestOptions) {
   const result = []
 
   // get the list of reimbursements rows
-  $('#tableauxRemboursements > .body > .toggle').each(function() {
-    const $header = $(this).find('.headerRemboursements')
+  const rowGroups = $('#tableauxRemboursements > .body > .toggle')
+  rowGroups.each(function(i) {
+    const $this = $(this)
+    const $header = $this.find('.headerRemboursements')
 
-    const amount = convertAmount($header.find('.montant').text())
-    const date = moment($header.find('#datePaiement').val(), 'x')
-    const isThirdPartyPayer =
-      $(this)
-        .find('.dateEmission')
-        .text()
-        .indexOf('professionnels de santé') !== -1
+    const { amount, date, isThirdPartyPayer, fileurl, idReimbursement } = scrape($header, {
+      amount: {
+        sel: '.montant',
+        parse: convertAmount
+      },
+      date: {
+        sel: '#datePaiement',
+        fn: node => moment(node.val(), 'x')
+      },
+      isThirdPartyPayer: {
+        sel: '.dateEmission',
+        parse: x => x.indexOf('professionnels de santé') !== -1
+      },
+      idReimbursement: {
+        sel: '#idDecompte',
+        fn: node => node.val()
+      },
+      fileurl: {
+        sel: '#tbsRembExportPdf',
+        attr: 'href',
+        parse: fileurl => `${baseUrl}${fileurl}`
+      }
+    })
 
-    // unique id for reimbursement
-    const idReimbursement = $header.find('#idDecompte').val()
-
-    let fileurl = $header.find('#tbsRembExportPdf').attr('href')
-    fileurl = `${baseUrl}${fileurl}`
-
-    const $subrows = $(this).find('> .body tbody tr')
     let beneficiary = null
+    const $subrows = $this.find('> .body tbody tr')
     $subrows.each(function() {
-      const data = $(this)
+      const $this = $(this)
+      const data = $this
         .find('td, th')
         .map(function() {
           return $(this)
@@ -37,10 +51,10 @@ function parseRemboursements($, getRequestOptions) {
         .get()
 
       if (data.length === 1) {
-        // we have a beneficiary line
+        // Beneficiary line
         beneficiary = data[0]
       } else {
-        // a normal line with data
+        // Line with data
         const originalAmount = convertAmount(data[data.length - 2])
         const originalDate = moment(
           $(this)
@@ -48,11 +62,11 @@ function parseRemboursements($, getRequestOptions) {
             .val(),
           'x'
         ).toDate()
-        const subtype = data[1]
-        // unique id for the prestation line. May be usefull
-        const idPrestation = $(this)
+        // unique id for the prestation line. May be useful
+        const idPrestation = $this
           .find('#idPrestation')
           .val()
+        const subtype = data[1]
         const socialSecurityRefund = convertAmount(data[3])
         result.push({
           type: 'health_costs',
@@ -73,7 +87,6 @@ function parseRemboursements($, getRequestOptions) {
           isRefund: true
         })
       }
-    })
   })
 
   return result
@@ -86,6 +99,7 @@ function getFileName(date, idDecompte) {
 }
 
 function convertAmount(amount) {
+  if (!amount) { return amount }
   amount = amount.replace(' €', '').replace(',', '.')
   return parseFloat(amount)
 }
