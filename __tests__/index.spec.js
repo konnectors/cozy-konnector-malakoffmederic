@@ -27,8 +27,10 @@ describe('parse reimbursements', () => {
       "subtype": "Honoraires de dispensation conditionnement normal pharmacie 65%",
       "type": "health_costs",
       "vendor": "Malakoff Mederic",
+      "groupAmount": 8.76
     })
     expect(reimbursements[10]).toEqual({
+      "groupAmount": 14.16,
       "amount": 3.54,
       "beneficiary": "Raphael THIRIOT",
       "date": new Date("2018-02-06T23:00:00.000Z"),

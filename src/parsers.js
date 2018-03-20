@@ -2,10 +2,12 @@
 const moment = require('moment')
 const { baseUrl } = require('./common')
 const { scrape } = require('cozy-konnector-libs')
+const sumBy = require('lodash/sumBy')
+const groupBy = require('lodash/groupBy')
 
 
 function parseRemboursements($, getRequestOptions) {
-  const result = []
+  const reimbursements = []
 
   // get the list of reimbursements rows
   const rowGroups = $('#tableauxRemboursements > .body > .toggle')
@@ -68,7 +70,8 @@ function parseRemboursements($, getRequestOptions) {
           .val()
         const subtype = data[1]
         const socialSecurityRefund = convertAmount(data[3])
-        result.push({
+        reimbursements.push({
+          group: i, // is used for groupAmount
           type: 'health_costs',
           isThirdPartyPayer,
           subtype,
@@ -87,9 +90,22 @@ function parseRemboursements($, getRequestOptions) {
           isRefund: true
         })
       }
+    }).filter(Boolean).toArray() // must filter for beneficiary lines
+    // that did not yield reimbursement
+
   })
 
-  return result
+  const groups = groupBy(reimbursements, 'group')
+  for (let k in groups) {
+    const group = groups[k]
+    const groupAmount = sumBy(group, 'amount')
+    group.forEach(r => {
+      r.groupAmount = groupAmount
+      delete r.group
+    })
+  }
+
+  return reimbursements
 }
 
 
