@@ -15,11 +15,7 @@ function parseRemboursements($, getRequestOptions) {
     const $this = $(this)
     const $header = $this.find('.headerRemboursements')
 
-    const { amount, date, isThirdPartyPayer, fileurl, idReimbursement } = scrape($header, {
-      amount: {
-        sel: '.montant',
-        parse: convertAmount
-      },
+    const { date, isThirdPartyPayer, fileurl, idReimbursement } = scrape($header, {
       date: {
         sel: '#datePaiement',
         fn: node => moment(node.val(), 'x')
@@ -41,6 +37,7 @@ function parseRemboursements($, getRequestOptions) {
 
     let beneficiary = null
     const $subrows = $this.find('> .body tbody tr')
+
     $subrows.each(function() {
       const $this = $(this)
       const data = $this
@@ -51,6 +48,16 @@ function parseRemboursements($, getRequestOptions) {
             .trim()
         })
         .get()
+
+      const { amount } = scrape($this, {
+        amount: {
+          sel: 'td:nth-child(5),td:nth-child(6)',
+          fn: nodes => sumBy(
+            nodes,
+            node => convertAmount($(node).text().trim())
+          )
+        }
+      })
 
       if (data.length === 1) {
         // Beneficiary line

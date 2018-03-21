@@ -10,8 +10,11 @@ describe('parse reimbursements', () => {
   it('should parse reimbursements correctly', () => {
     const reimbursements = parseRemboursements($, () => {})
     expect(reimbursements.length).toBe(92)
+    expect(reimbursements[70].amount).toBe(34.5)
+    expect(reimbursements[70].groupAmount).toBe(111)
     expect(reimbursements[0]).toEqual({
-      "amount": 2.19,
+      "amount": 0.36,
+      "groupAmount": 2.19,
       "beneficiary": "Raphael THIRIOT",
       "date": new Date("2018-03-07T23:00:00.000Z"),
       "filename": "20180308_528117465_R18065200942444511_malakoff_mederic.pdf",
@@ -26,12 +29,11 @@ describe('parse reimbursements', () => {
       "socialSecurityRefund": 0.66,
       "subtype": "Honoraires de dispensation conditionnement normal pharmacie 65%",
       "type": "health_costs",
-      "vendor": "Malakoff Mederic",
-      "groupAmount": 8.76
+      "vendor": "Malakoff Mederic"
     })
     expect(reimbursements[10]).toEqual({
-      "groupAmount": 14.16,
-      "amount": 3.54,
+      "groupAmount": 3.54,
+      "amount": 0.81,
       "beneficiary": "Raphael THIRIOT",
       "date": new Date("2018-02-06T23:00:00.000Z"),
       "filename": "20180207_528117465_R18037202299646947_malakoff_mederic.pdf",
@@ -48,5 +50,6 @@ describe('parse reimbursements', () => {
       "type": "health_costs",
       "vendor": "Malakoff Mederic",
     })
+
   })
 })
