@@ -23,10 +23,10 @@
     "singleQuote": true
   },
   "scripts": {
-    "standalone": "DEBUG=* cozy-konnector-standalone src/index.js",
-    "standalone:record": "REPLAY=record cozy-konnector-standalone src/index.js",
-    "standalone:replay": "REPLAY=replay cozy-konnector-standalone src/index.js",
-    "dev": "cozy-konnector-dev src/index.js",
+    "standalone": "DEBUG=* cozy-run-standalone src/index.js",
+    "standalone:record": "REPLAY=record cozy-run-standalone src/index.js",
+    "standalone:replay": "REPLAY=replay cozy-run-standalone src/index.js",
+    "dev": "cozy-run-dev src/index.js",
     "build": "webpack",
     "format": "prettier --write '**/*.{js,json}'",
     "precommit": "eslint .",
