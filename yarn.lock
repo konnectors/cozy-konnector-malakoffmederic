@@ -1889,7 +1889,7 @@ cozy-client-js@^0.7.0:
     pouchdb-adapter-cordova-sqlite "https://github.com/SnceGroup/pouchdb-adapter-cordova-sqlite.git#f3ee23009b70209c611435d57491aa77fb88802a"
     pouchdb-find "0.10.4"
 
-cozy-jobs-cli@^1.0.4:
+cozy-jobs-cli@1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/cozy-jobs-cli/-/cozy-jobs-cli-1.0.4.tgz#6af8d90a2cf9b0974567c534faf1268e002a2720"
   dependencies:
@@ -2465,7 +2465,7 @@ escodegen@^1.6.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-cozy-app@^0.4.0:
+eslint-config-cozy-app@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/eslint-config-cozy-app/-/eslint-config-cozy-app-0.4.0.tgz#2adf8d9ac93b3addaba33956073f91c6bf1a3105"
   dependencies:
