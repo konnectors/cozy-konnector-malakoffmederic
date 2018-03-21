@@ -70,7 +70,7 @@ function parseRemboursements($, getRequestOptions) {
             .find('#datePrestation')
             .val(),
           'x'
-        ).toDate()
+        )
         // unique id for the prestation line. May be useful
         const idPrestation = $this
           .find('#idPrestation')
@@ -83,7 +83,7 @@ function parseRemboursements($, getRequestOptions) {
           isThirdPartyPayer,
           subtype,
           vendor: 'Malakoff Mederic',
-          date: date.toDate(),
+          date: date && date.toDate(),
           fileurl,
           filename: getFileName(date, idReimbursement),
           requestOptions: getRequestOptions(),
@@ -93,7 +93,7 @@ function parseRemboursements($, getRequestOptions) {
           beneficiary,
           socialSecurityRefund,
           originalAmount,
-          originalDate,
+          originalDate: originalDate && originalDate.toDate(),
           isRefund: true
         })
       }
