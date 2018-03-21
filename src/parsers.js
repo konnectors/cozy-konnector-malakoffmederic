@@ -64,7 +64,7 @@ function parseRemboursements($, getRequestOptions) {
         beneficiary = data[0]
       } else {
         // Line with data
-        const originalAmount = convertAmount(data[data.length - 2])
+        const originalAmount = convertAmount(data[2])
         const originalDate = moment(
           $(this)
             .find('#datePrestation')
