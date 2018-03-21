@@ -1,7 +1,7 @@
 
 const moment = require('moment')
 const { baseUrl } = require('./common')
-const { scrape } = require('cozy-konnector-libs')
+const { scrape, log } = require('cozy-konnector-libs')
 const sumBy = require('lodash/sumBy')
 const groupBy = require('lodash/groupBy')
 
@@ -15,7 +15,7 @@ function parseRemboursements($, getRequestOptions) {
     const $this = $(this)
     const $header = $this.find('.headerRemboursements')
 
-    const { date, isThirdPartyPayer, fileurl, idReimbursement } = scrape($header, {
+    const scraped = scrape($header, {
       date: {
         sel: '#datePaiement',
         fn: node => moment(node.val(), 'x')
@@ -34,6 +34,9 @@ function parseRemboursements($, getRequestOptions) {
         parse: fileurl => `${baseUrl}${fileurl}`
       }
     })
+
+    log('info', scraped, 'scraped from malakoff mederic')
+    const { date, isThirdPartyPayer, fileurl, idReimbursement } = scraped
 
     let beneficiary = null
     const $subrows = $this.find('> .body tbody tr')
