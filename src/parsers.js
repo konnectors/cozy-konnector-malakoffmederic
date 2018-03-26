@@ -1,10 +1,8 @@
-
 const moment = require('moment')
 const { baseUrl } = require('./common')
 const { scrape, log } = require('cozy-konnector-libs')
 const sumBy = require('lodash/sumBy')
 const groupBy = require('lodash/groupBy')
-
 
 function parseRemboursements($, getRequestOptions) {
   const reimbursements = []
@@ -41,68 +39,72 @@ function parseRemboursements($, getRequestOptions) {
     let beneficiary = null
     const $subrows = $this.find('> .body tbody tr')
 
-    $subrows.each(function() {
-      const $this = $(this)
-      const data = $this
-        .find('td, th')
-        .map(function() {
-          return $(this)
-            .text()
-            .trim()
-        })
-        .get()
+    $subrows
+      .each(function() {
+        const $this = $(this)
+        const data = $this
+          .find('td, th')
+          .map(function() {
+            return $(this)
+              .text()
+              .trim()
+          })
+          .get()
 
-      const { amount } = scrape($this, {
-        amount: {
-          sel: 'td:nth-child(5),td:nth-child(6)',
-          fn: nodes => sumBy(
-            nodes,
-            node => convertAmount($(node).text().trim())
+        const { amount } = scrape($this, {
+          amount: {
+            sel: 'td:nth-child(5),td:nth-child(6)',
+            fn: nodes =>
+              sumBy(nodes, node =>
+                convertAmount(
+                  $(node)
+                    .text()
+                    .trim()
+                )
+              )
+          }
+        })
+
+        if (data.length === 1) {
+          // Beneficiary line
+          beneficiary = data[0]
+        } else {
+          // Line with data
+          const originalAmount = convertAmount(data[2])
+          const originalDate = moment(
+            $(this)
+              .find('#datePrestation')
+              .val(),
+            'x'
           )
+          // unique id for the prestation line. May be useful
+          const idPrestation = $this.find('#idPrestation').val()
+          const subtype = data[1]
+          const socialSecurityRefund = convertAmount(data[3])
+          reimbursements.push({
+            group: i, // is used for groupAmount
+            type: 'health_costs',
+            isThirdPartyPayer,
+            subtype,
+            vendor: 'Malakoff Mederic',
+            date: date && date.toDate(),
+            fileurl,
+            filename: getFileName(date, idReimbursement),
+            requestOptions: getRequestOptions(),
+            amount,
+            idReimbursement,
+            idPrestation,
+            beneficiary,
+            socialSecurityRefund,
+            originalAmount,
+            originalDate: originalDate && originalDate.toDate(),
+            isRefund: true
+          })
         }
       })
-
-      if (data.length === 1) {
-        // Beneficiary line
-        beneficiary = data[0]
-      } else {
-        // Line with data
-        const originalAmount = convertAmount(data[2])
-        const originalDate = moment(
-          $(this)
-            .find('#datePrestation')
-            .val(),
-          'x'
-        )
-        // unique id for the prestation line. May be useful
-        const idPrestation = $this
-          .find('#idPrestation')
-          .val()
-        const subtype = data[1]
-        const socialSecurityRefund = convertAmount(data[3])
-        reimbursements.push({
-          group: i, // is used for groupAmount
-          type: 'health_costs',
-          isThirdPartyPayer,
-          subtype,
-          vendor: 'Malakoff Mederic',
-          date: date && date.toDate(),
-          fileurl,
-          filename: getFileName(date, idReimbursement),
-          requestOptions: getRequestOptions(),
-          amount,
-          idReimbursement,
-          idPrestation,
-          beneficiary,
-          socialSecurityRefund,
-          originalAmount,
-          originalDate: originalDate && originalDate.toDate(),
-          isRefund: true
-        })
-      }
-    }).filter(Boolean).toArray() // must filter for beneficiary lines
+      .filter(Boolean)
+      .toArray() // must filter for beneficiary lines
     // that did not yield reimbursement
-
   })
 
   const groups = groupBy(reimbursements, 'group')
@@ -118,14 +120,15 @@ function parseRemboursements($, getRequestOptions) {
   return reimbursements
 }
 
-
 function getFileName(date, idDecompte) {
   // you can have multiple reimbursements for the same day
   return `${date.format('YYYYMMDD')}_${idDecompte}_malakoff_mederic.pdf`
 }
 
 function convertAmount(amount) {
-  if (!amount) { return amount }
+  if (!amount) {
+    return amount
+  }
   amount = amount.replace(' €', '').replace(',', '.')
   return parseFloat(amount)
 }
