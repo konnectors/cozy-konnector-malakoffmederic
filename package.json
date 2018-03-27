@@ -26,8 +26,7 @@
     "build": "webpack",
     "precommit": "eslint .",
     "lint": "eslint --fix .",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git",
-    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-malakoffmederic.git"
+    "deploy": "git-directory-deploy --directory build/ --branch ${DEPLOY_BRANCH:-build} --repo=${DEPLOY_REPOSITORY:-https://github.com/konnectors/cozy-konnector-malakoffmederic.git}"
   },
   "dependencies": {
     "cozy-konnector-libs": "^3.7.3",
