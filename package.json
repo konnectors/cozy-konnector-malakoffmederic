@@ -29,7 +29,7 @@
     "deploy": "git-directory-deploy --directory build/ --branch ${DEPLOY_BRANCH:-build} --repo=${DEPLOY_REPOSITORY:-https://github.com/konnectors/cozy-konnector-malakoffmederic.git}"
   },
   "dependencies": {
-    "cozy-konnector-libs": "3.8.0",
+    "cozy-konnector-libs": "3.8.1",
     "moment": "^2.18.1"
   },
   "devDependencies": {
