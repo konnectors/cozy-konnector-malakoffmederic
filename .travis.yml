@@ -1,0 +1,15 @@
+language: node_js
+matrix:
+  fast_finish: true
+node_js:
+- '8'
+cache:
+  yarn: true
+  directories:
+  - node_modules
+env:
+  global:
+  - secure: DG/JzD0+x2NEzb9XL6VhvqGui1PumHbk4tX0eurIjSLmoLN41Gwsn1iuUqSUkV4DJJXjy12RtR6iz3GjhjcQGx1euPO+RKBpqn+DGyMdLqCTKkRe4gSocb6bQEewKXRYMaq79oOtlQxpES9vISKBUBF3JncumnZWfiwlo5A25QxhVZ+OUz4fAtjaZGeSA1Le/oWtUbpK4ODBStjhqXFDFkNparwF3MYtaptUf8XZJRCli+6fktt/yjGBG/WcRVhTrn+WZaBbHFU+uNflWeDO/xYEUVz5JvH0YXJwxW7ver2wfRRlHkJOAL+S2GVPikJFjiTtciCTVtJhZkywAConN2fbGqljTxDBGHr4gah87StzbjUH+0Szk4CVxHv2kfpmHHFuEgDzpAxyemfLk1Gj6Tx6VGKf9HS65sq7JKaIlABe+wNkSLXhucmZ/0qtMN0lNAPT1pTA6GXNtOu/ERoJ9v/iFmCK+TxTTLpA97BYq9pl6Wh82jdaROZTrywrCnYb2/sHb8Jzcqths9W+9BLfQFMWTrgYpmsWwkxyqJisz8mZzYubVO8l0kY1Meu5JNAcPpI+NicwTsMvsGy8Ux4Sv87Keo9acnxzpqs47HVNzPNUTJUFoyuASZCYXCfr2AI37kFon94dbAc4W+DgM1LLDIuwe/RcT3kDrkONMenzjEY=
+script:
+- yarn add cozy-app-publish
+- yarn cozy-app-publish --token $REGISTRY_TOKEN --build-dir '.'
