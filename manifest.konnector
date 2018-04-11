@@ -37,10 +37,10 @@
   },
   "locales": {
     "fr": {
-      "short_description": "Récupère toutes vos factures Malakoff Mederic",
+      "short_description": "Récupère toutes vos factures Malakoff Mederic"
     },
     "en": {
-      "short_description": "Fetch all your Malakoff Mederic bills",
+      "short_description": "Fetch all your Malakoff Mederic bills"
     }
   },
   "permissions": {
