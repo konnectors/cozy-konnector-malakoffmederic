@@ -1,21 +1,21 @@
 {
   "version": "1.0.0",
   "name": "Malakoff Mederic",
-  "slug": "malakoffmederic-collect",
+  "slug": "malakoffmederic",
   "type": "konnector",
   "language": "node",
   "icon": "icon.svg",
   "source": "git://github.com/konnectors/cozy-konnector-malakoffmederic.git",
   "editor": "Cozy",
-  "vendorLink": "http://www.malakoffmederic.com/",
+  "vendor_link": "http://www.malakoffmederic.com/",
   "developer": {
     "name": "Cozy Cloud",
     "url": "https://cozy.io"
   },
   "categories": ["insurance"],
-  "screenshots": ["screenshots/screenshot.png"],
+  "screenshots": [],
   "langs": ["fr"],
-  "dataType": [
+  "data_types": [
     "bill"
   ],
   "fields": {
