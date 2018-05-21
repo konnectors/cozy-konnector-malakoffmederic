@@ -1,23 +1,14 @@
 {
   "version": "1.0.0",
   "name": "Malakoff Mederic",
-  "slug": "malakoffmederic",
   "type": "konnector",
   "language": "node",
   "icon": "icon.svg",
+  "slug": "malakoffmederic",
   "source": "git://github.com/konnectors/cozy-konnector-malakoffmederic.git",
   "editor": "Cozy",
   "vendor_link": "http://www.malakoffmederic.com/",
-  "developer": {
-    "name": "Cozy Cloud",
-    "url": "https://cozy.io"
-  },
   "categories": ["insurance"],
-  "screenshots": [],
-  "langs": ["fr"],
-  "data_types": [
-    "bill"
-  ],
   "fields": {
     "login": {
       "type": "text",
@@ -35,15 +26,15 @@
       }
     }
   },
-  "locales": {
-    "fr": {
-      "short_description": "Récupère toutes vos factures Malakoff Mederic"
-    },
-    "en": {
-      "short_description": "Fetch all your Malakoff Mederic bills"
-    }
-  },
+  "data_types": [
+    "bill"
+  ],
+  "screenshots": [],
   "permissions": {
+    "bank operations": {
+      "description": "Required to link the bills with their bank operation",
+      "type": "io.cozy.bank.operations"
+    },
     "bills": {
       "description": "Required to save the bills data",
       "type": "io.cozy.bills"
@@ -52,14 +43,23 @@
       "description": "Required to save the bills",
       "type": "io.cozy.files"
     },
-    "bankoperations": {
-      "description": "Required to link the bills with their bank operation",
-      "type": "io.cozy.bank.operations"
-    },
     "accounts": {
       "description": "Required to get the account's data",
       "type": "io.cozy.accounts",
       "verbs": ["GET"]
+    }
+  },
+  "developer": {
+    "name": "Cozy Cloud",
+    "url": "https://cozy.io"
+  },
+  "langs": ["fr"],
+  "locales": {
+    "fr": {
+      "short_description": "Récupère toutes vos factures Malakoff Mederic"
+    },
+    "en": {
+      "short_description": "Fetch all your Malakoff Mederic bills"
     }
   }
 }

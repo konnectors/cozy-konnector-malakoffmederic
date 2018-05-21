@@ -1,29 +1,41 @@
 language: node_js
 node_js:
-  - '8'
+- '8'
 env:
   global:
-    # kosssi GITHUB_TOKEN
-    - secure: "pO6f6oUsLprIUDjPUHIdyuTbrITWcPvyFLT6rU7GkDcldtKBT2s2/vo7DBJlQWHAmzy4vqhRcBnESfVQtRXqE2O1G/7vhEb1cW2LNhFKZsbjks/niak5jJFdvkFH+Y5abu27Pg+mRaQ5q27BAt8MVYkJ4ndYX+0LBEv7jVn7GTuT8gNdDjOd7is4UUczccTHcn0sCuu9BAqkOTWjDxVI0q7njpapcnocA+cMTVvwUuS0TXRYz4q/xg/Vsb9MP3VrPO0ilK1L35JJBq6Vhdc7aYT703chRhk7GzPl5GEwOsD1NewmuQxzWpuKtobtLxYfVSq3+8P5PvsNyzzvFMcFBvjDMkwhPBDx0QvUwdd71KGZ3bV2l6YN+BdJjjsYC0rcOIU669+IMGwA+e1vw5giEr/npOeOTsLB5sBYH0q6BM915FCFAYOBFle36i5bsmJznsTzMHjioWyvsAhSzH1oaZ/swUcljrSnMG1MMumu5tVSQ4zEcea/4y/ZONvAwhp6uhQdyrGet7LyTs4rpTwsZQK1q1+V2BG0uQxOdtIPm/xSW4hkd4jGH2TPPWYwSvd+TWoRhTqkqkjFszCih+fdmASThXULzwJt3uZQfPhW5WHikUEktZKaP3PIfO5O6jwBwKGnhIQIdddZ+gPGGhLGOrNqRJwAKbgpwNcN5p1EviM="
-    # REGISTRY_TOKEN
-    - secure: DG/JzD0+x2NEzb9XL6VhvqGui1PumHbk4tX0eurIjSLmoLN41Gwsn1iuUqSUkV4DJJXjy12RtR6iz3GjhjcQGx1euPO+RKBpqn+DGyMdLqCTKkRe4gSocb6bQEewKXRYMaq79oOtlQxpES9vISKBUBF3JncumnZWfiwlo5A25QxhVZ+OUz4fAtjaZGeSA1Le/oWtUbpK4ODBStjhqXFDFkNparwF3MYtaptUf8XZJRCli+6fktt/yjGBG/WcRVhTrn+WZaBbHFU+uNflWeDO/xYEUVz5JvH0YXJwxW7ver2wfRRlHkJOAL+S2GVPikJFjiTtciCTVtJhZkywAConN2fbGqljTxDBGHr4gah87StzbjUH+0Szk4CVxHv2kfpmHHFuEgDzpAxyemfLk1Gj6Tx6VGKf9HS65sq7JKaIlABe+wNkSLXhucmZ/0qtMN0lNAPT1pTA6GXNtOu/ERoJ9v/iFmCK+TxTTLpA97BYq9pl6Wh82jdaROZTrywrCnYb2/sHb8Jzcqths9W+9BLfQFMWTrgYpmsWwkxyqJisz8mZzYubVO8l0kY1Meu5JNAcPpI+NicwTsMvsGy8Ux4Sv87Keo9acnxzpqs47HVNzPNUTJUFoyuASZCYXCfr2AI37kFon94dbAc4W+DgM1LLDIuwe/RcT3kDrkONMenzjEY=
+  - GH_USER_EMAIL="travis@example.org"
+  - GH_USER_NAME="cozy-bot"
+  - DEPLOY_REPOSITORY="git@github.com:konnectors/cozy-konnector-malakoffmederic.git"
+  - secure: FqzTMmz8YYL5HFVuNxsaCieeAV9ihJcH9o0RBFQ/THR3S4QbEPLGZm+wzsdTa8cBLKdKINtODsC8yJ8HsgdNViJGe6jFTYGTl/0eEyjRBVJqqREu17jT8kgK7GXpwFSKTNXXUF9BNysLaJF0xVd1zhn1iumfbGo3J5PJ8ojcQZBxGz5XW3xduc8NSKOPmjDixUc/FL/5q3m9TihyogbM455L+8G3foTANXS0gDeau6ZcC2BdsC2gSe14rxo1+BvvHk4TuPF/adyU2kxxikjjY2rH/A2s2qvLdXiDPea3HKWjp0c765+expZBFwZDT7SyPoT2mouU8Chmh6D2ORpHRDPVPcwXHcaL0bjusDznvAt+I+KMODupbmcdG18NpMNIAYF1T+dkwswyTzMt5yowoO0+qOU7QnklNE+gIbKjiNpcWOStxZm7ltpxwvtg2W0I3uOme1/V3N4yoTfuWf95tbfD4b92mM876mY4HgsybovY6bB0oVevM27ED3LnNWXTt6FuH1gR08482Fd+iF1o6iKIxFACqTHDJtmO2quGsZjUfv+ND+lRFYeYaAdUcX4WavjWqdtil7ic1U6tIdFz6RGOwcNMhnVJlAMjY5DUoy7MRiie09g/DDu+A+yxS2hYI97zcV+wM+/e4Fg/WZtww62ytoEp3cHEknrhG9m2N5Q=
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 script:
-  - yarn lint
-  - yarn build
+- yarn lint
+- yarn build
 deploy:
-  - provider: script
-    repo: konnectors/cozy-konnector-malakoffmederic
-    skip-cleanup: true
-    script: DEPLOY_BRANCH=build && yarn deploy && yarn cozyPublish
-    on:
-      branch: master
-  - provider: script
-    repo: konnectors/cozy-konnector-malakoffmederic
-    skip-cleanup: true
-    script: DEPLOY_BRANCH=build && yarn deploy && yarn cozyPublish
-    on:
-      tags: true
+- provider: script
+  skip-cleanup: true
+  script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
+  on:
+    branch: master
+- provider: script
+  skip-cleanup: true
+  script: DEPLOY_BRANCH=latest yarn deploy
+  on:
+    branch: prod
+- provider: script
+  skip-cleanup: true
+  script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
+  on:
+    tags: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_1fece3009759_key -iv $encrypted_1fece3009759_iv
+  -in github_deploy_key.enc -out /tmp/github_deploy_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/github_deploy_key
+- ssh-add /tmp/github_deploy_key
+after_deploy:
+- rm /tmp/github_deploy_key
+- ssh-add -D
