@@ -1,35 +1,35 @@
-[Cozy][cozy] Malakoff Mederic
-=======================================
+# [Cozy][cozy] Malakoff Mederic
 
-What's Cozy?
-------------
+[![Build Status](https://travis-ci.org/konnectors/cozy-konnector-malakoffmederic.svg?branch=master)](https://travis-ci.org/konnectors/cozy-konnector-malakoffmederic)
+
+## What's Cozy?
 
 ![Cozy Logo](https://cdn.rawgit.com/cozy/cozy-guidelines/master/templates/cozy_logo_small.svg)
 
 [Cozy] is a platform that brings all your web services in the same private space. With it, your webapps and your devices can share data easily, providing you with a new experience. You can install Cozy on your own hardware where no one's tracking you.
 
-What's this konnector?
---------------------------
+## What's this konnector?
 
-The konnector gets information from Malakoff Mederic (French national insurance)
-This konnector fetches the list of reimbursements from [Malakoff Mederic][malakoff_mederic].
+This konnector fetches the list of reimbursements from [Malakoff Mederic][malakoff_mederic], the
+French medical insurance.
+In France, you pay your health care but the health insurances pay you back (in part) after.
+Sometimes, you don't even have to pay and the health insurances directly pay the health provider
+(isThirdPartyPayer field to `true`).
 
-What data is imported ?
------------------------
+## What data is imported ?
 
 This konnector imports the list of reimbursements metadata that you can see in the "Suivi des remboursements" page on Malakoff Mederic website.
 It uses the detailed view for each line.
 
-For each reimbursement, an associated PDF bill is downloaded (many reimbursements can have the
-same associated file and the file is only downloaded once.
-
-Each health care treatment has its own document in io.cozy.bills to  allow the linking with the original debit operation.
-But Malakoff Mederic can reimburse multiple health cares treatments at once sometimes.
+All this data is stored in `io.cozy.bills` doctype with a `isRefund` attribute to make a difference
+with other bills. This data is mostly used by the Banks application to link bank operations to
+health expenses and reimbursements.
 
 An example of imported data can be seen in [./importedData.json](./importedData.json)
 
 Take a look at the [documentation](https://github.com/cozy/cozy-doctypes/blob/master/docs/io.cozy.bills.md)
-to have the signification of the fields in this file.
+to have the signification of the fields in this file but the important fields for bank operation
+matching are : isThirdPartyPayer, date, originalDate, amount, groupAmount, originalAmount, invoice.
 
 ### TODO
 
