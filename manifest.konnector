@@ -61,5 +61,6 @@
     "en": {
       "short_description": "Fetch all your Malakoff Mederic bills"
     }
-  }
+  },
+  "manifest_version": "2"
 }
