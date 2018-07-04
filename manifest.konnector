@@ -62,5 +62,6 @@
       "short_description": "Fetch all your Malakoff Mederic bills"
     }
   },
+  "banksTransactionRegExp": "\\bmalakoff\\b",
   "manifest_version": "2"
 }
