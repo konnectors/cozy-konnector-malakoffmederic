@@ -120,11 +120,18 @@ function logIn(fields, resp) {
     })
 }
 
-function fetchRemboursements() {
+async function fetchRemboursements() {
   request = requestFactory({
     cheerio: true
   })
-  return request(`${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`)
+  const $ = await request(
+    `${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`
+  )
+
+  if ($('input[name=questionSecrete]').length > 0) {
+    throw new Error(errors.USER_ACTION_NEEDED)
+  }
+  return $
 }
 
 module.exports.parseRemboursements = parseRemboursements
