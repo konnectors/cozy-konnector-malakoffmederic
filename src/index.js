@@ -78,6 +78,7 @@ function logIn(fields, resp) {
 
   log('debug', httpSessionId, 'httpSessionId')
 
+  request = request.defaults({ json: false })
   return request({
     method: 'POST',
     url: `${baseUrl}/dwr/call/plaincall/__System.generateId.dwr`,
@@ -99,7 +100,6 @@ function logIn(fields, resp) {
         cookie,
         `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`
       )
-      request = request.defaults({ json: false })
       return request({
         method: 'POST',
         url: `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`,
