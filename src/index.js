@@ -99,6 +99,7 @@ function logIn(fields, resp) {
         cookie,
         `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`
       )
+      request = request.defaults({ json: false })
       return request({
         method: 'POST',
         url: `${baseUrl}/dwr/call/plaincall/InternauteValidator.checkConnexion.dwr`,
@@ -123,10 +124,14 @@ function logIn(fields, resp) {
 
 async function fetchRemboursements() {
   request = requestFactory({
+    jar: j,
     cheerio: true
   })
   const $ = await request(
-    `${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`
+    `${baseUrl}/espaceClient/sante/tbs/redirectionAction.do`,
+    {
+      json: true
+    }
   )
 
   if ($('input[name=questionSecrete]').length > 0) {
