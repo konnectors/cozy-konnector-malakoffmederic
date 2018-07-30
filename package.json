@@ -1,6 +1,6 @@
 {
   "name": "cozy-konnector-malakoffmederic",
-  "version": "1.0.3",
+  "version": "1.0.2",
   "description": "Import your Malakoff Mederic bills",
   "repository": {
     "type": "git",
