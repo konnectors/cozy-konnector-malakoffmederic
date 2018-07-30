@@ -1,0 +1,67 @@
+{
+  "version": "1.0.3",
+  "name": "Malakoff Mederic",
+  "type": "konnector",
+  "language": "node",
+  "icon": "icon.svg",
+  "slug": "malakoffmederic",
+  "source": "git://github.com/konnectors/cozy-konnector-malakoffmederic.git",
+  "editor": "Cozy",
+  "vendor_link": "http://www.malakoffmederic.com/",
+  "categories": ["insurance"],
+  "fields": {
+    "login": {
+      "type": "text",
+      "min": 9,
+      "max": 9
+    },
+    "password": {
+      "type": "password",
+      "min": 4
+    },
+    "advancedFields": {
+      "folderPath": {
+        "advanced": true,
+        "isRequired": false
+      }
+    }
+  },
+  "data_types": [
+    "bill"
+  ],
+  "screenshots": [],
+  "permissions": {
+    "bank operations": {
+      "description": "Required to link the bills with their bank operation",
+      "type": "io.cozy.bank.operations"
+    },
+    "bills": {
+      "description": "Required to save the bills data",
+      "type": "io.cozy.bills"
+    },
+    "files": {
+      "description": "Required to save the bills",
+      "type": "io.cozy.files"
+    },
+    "accounts": {
+      "description": "Required to get the account's data",
+      "type": "io.cozy.accounts",
+      "verbs": ["GET"]
+    }
+  },
+  "developer": {
+    "name": "Cozy Cloud",
+    "url": "https://cozy.io"
+  },
+  "langs": ["fr"],
+  "locales": {
+    "fr": {
+      "short_description": "Récupère toutes vos factures Malakoff Mederic"
+    },
+    "en": {
+      "short_description": "Fetch all your Malakoff Mederic bills"
+    }
+  },
+  "banksTransactionRegExp": "\\bmalakoff\\b",
+  "manifest_version": "2"
+}
