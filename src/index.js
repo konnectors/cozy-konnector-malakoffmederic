@@ -112,10 +112,11 @@ function logIn(fields, resp) {
       })
     })
     .then(body => {
-      if (body.indexOf('LOGON_KO') > -1) {
-        throw new Error(errors.LOGIN_FAILED)
-      } else {
+      if (body.match(/dwr\.engine\.remote\.handleCallback\(".",".","OK"\);/)) {
         log('info', 'LOGIN_OK')
+      } else {
+        log('error', body, 'bad login response')
+        throw new Error(errors.LOGIN_FAILED)
       }
     })
 }
