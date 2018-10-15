@@ -40,7 +40,8 @@ function start(fields) {
         interval: 5000,
         throw_original: true,
         // do not retry if we get the LOGIN_FAILED error code
-        predicate: err => err.message !== 'LOGIN_FAILED'
+        predicate: err =>
+          ![errors.LOGIN_FAILED, errors.VENDOR_DOWN].includes(err.message)
       })
     )
     .then(fetchRemboursements)
@@ -115,6 +116,13 @@ function logIn(fields, resp) {
     .then(body => {
       if (body.match(/dwr\.engine\.remote\.handleCallback\(".",".","OK"\);/)) {
         log('info', 'LOGIN_OK')
+      } else if (
+        body.match(
+          /dwr\.engine\.remote\.handleCallback\(".",".","ERREUR_TECHNIQUE"\);/
+        )
+      ) {
+        log('error', body)
+        throw new Error(errors.VENDOR_DOWN)
       } else {
         log('error', body, 'bad login response')
         throw new Error(errors.LOGIN_FAILED)
