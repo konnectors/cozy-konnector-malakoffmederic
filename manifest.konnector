@@ -5,7 +5,7 @@
   "language": "node",
   "icon": "icon.svg",
   "slug": "malakoffmederic",
-  "source": "git://github.com/konnectors/cozy-konnector-malakoffmederic.git",
+  "source": "git@github.com:konnectors/cozy-konnector-malakoffmederic.git",
   "editor": "Cozy",
   "vendor_link": "http://www.malakoffmederic.com/",
   "categories": [
