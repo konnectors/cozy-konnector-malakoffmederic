@@ -49,7 +49,9 @@ function start(fields) {
     .then(entries =>
       saveBills(entries, fields, {
         timeout: Date.now() + 60 * 1000,
-        identifiers: ['Malakoff']
+        identifiers: ['Malakoff'],
+        sourceAccount: this._account._id,
+        sourceAccountIdentifier: fields.login
       })
     )
 }
