@@ -75,12 +75,6 @@ function logIn(fields, resp) {
     throw new Error(errors.VENDOR_DOWN)
 
   // This id is stored in the cookie and used to check the log in
-  let httpSessionId = resp.headers['set-cookie'][0]
-  httpSessionId = httpSessionId.split(';')[0]
-  httpSessionId = httpSessionId.split('=')[1]
-
-  log('debug', httpSessionId, 'httpSessionId')
-
   request = request.defaults({ json: false })
   return request({
     method: 'POST',
@@ -97,7 +91,6 @@ function logIn(fields, resp) {
       return scriptSessionId
     })
     .then(scriptSessionId => {
-      log('debug', scriptSessionId, 'scriptSessionId')
       let cookie = request.cookie(`DWRSESSIONID=${scriptSessionId}`)
       j.setCookie(
         cookie,
