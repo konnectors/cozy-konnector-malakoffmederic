@@ -8,7 +8,6 @@ const {
   BaseKonnector,
   log,
   requestFactory,
-  saveBills,
   errors,
   retry
 } = require('cozy-konnector-libs')
@@ -48,11 +47,11 @@ async function start(fields) {
 
   const res = await fetchRemboursements()
   const entries = await parseRemboursements(res, getRequestOptions)
-  return saveBills(entries, fields, {
-    timeout: Date.now() + 60 * 1000,
+  return this.saveBills(entries, fields, {
     identifiers: ['Malakoff'],
-    sourceAccount: this._account._id,
-    sourceAccountIdentifier: fields.login
+    fileIdAttributes: ['idReimbursement'],
+    linkBankOperations: false,
+    keys: ['idPrestation']
   })
 }
 
