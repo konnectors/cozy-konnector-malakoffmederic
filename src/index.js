@@ -30,30 +30,30 @@ const getRequestOptions = () => ({
 
 module.exports = new BaseKonnector(start)
 
-function start(fields) {
-  return retry(fetchLoginPage, {
+async function start(fields) {
+  await this.deactivateAutoSuccessfulLogin()
+  const resp = await retry(fetchLoginPage, {
     interval: 5000,
     throw_original: true
   })
-    .then(resp =>
-      retry(() => logIn(fields, resp), {
-        interval: 5000,
-        throw_original: true,
-        // do not retry if we get the LOGIN_FAILED error code
-        predicate: err =>
-          ![errors.LOGIN_FAILED, errors.VENDOR_DOWN].includes(err.message)
-      })
-    )
-    .then(fetchRemboursements)
-    .then(res => parseRemboursements(res, getRequestOptions))
-    .then(entries =>
-      saveBills(entries, fields, {
-        timeout: Date.now() + 60 * 1000,
-        identifiers: ['Malakoff'],
-        sourceAccount: this._account._id,
-        sourceAccountIdentifier: fields.login
-      })
-    )
+
+  await retry(() => logIn(fields, resp), {
+    interval: 5000,
+    throw_original: true,
+    // do not retry if we get the LOGIN_FAILED error code
+    predicate: err =>
+      ![errors.LOGIN_FAILED, errors.VENDOR_DOWN].includes(err.message)
+  })
+  await this.notifySuccessfulLogin()
+
+  const res = await fetchRemboursements()
+  const entries = await parseRemboursements(res, getRequestOptions)
+  return saveBills(entries, fields, {
+    timeout: Date.now() + 60 * 1000,
+    identifiers: ['Malakoff'],
+    sourceAccount: this._account._id,
+    sourceAccountIdentifier: fields.login
+  })
 }
 
 function fetchLoginPage() {
