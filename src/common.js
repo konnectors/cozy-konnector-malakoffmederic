@@ -1,4 +1,4 @@
-const baseUrl = 'https://extranet.malakoffmederic.com'
+const baseUrl = 'https://extranet.malakoffhumanis.com'
 
 module.exports = {
   baseUrl
