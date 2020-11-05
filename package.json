@@ -1,6 +1,6 @@
 {
   "name": "cozy-konnector-malakoffmederic",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Import your Malakoff Mederic bills",
   "repository": {
     "type": "git",
@@ -37,12 +37,12 @@
     "travisDeployKey": "./bin/generate_travis_deploy_key"
   },
   "dependencies": {
-    "cozy-konnector-libs": "4.35.0",
+    "cozy-konnector-libs": "4.36.0",
     "moment": "2.29.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "6.2.1",
-    "cozy-app-publish": "0.25.0",
+    "cozy-app-publish": "0.25.1",
     "cozy-jobs-cli": "1.13.7",
     "eslint-config-cozy-app": "2.0.0",
     "git-directory-deploy": "1.5.1",
