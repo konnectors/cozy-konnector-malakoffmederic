@@ -9,7 +9,7 @@ function parseRemboursements($, getRequestOptions) {
 
   // get the list of reimbursements rows
   const rowGroups = $('#tableauxRemboursements > .body > .toggle')
-  rowGroups.each(function(i) {
+  rowGroups.each(function (i) {
     const $this = $(this)
     const $header = $this.find('.headerRemboursements')
 
@@ -40,14 +40,12 @@ function parseRemboursements($, getRequestOptions) {
     const $subrows = $this.find('> .body tbody tr')
 
     $subrows
-      .each(function() {
+      .each(function () {
         const $this = $(this)
         const data = $this
           .find('td, th')
-          .map(function() {
-            return $(this)
-              .text()
-              .trim()
+          .map(function () {
+            return $(this).text().trim()
           })
           .get()
 
@@ -55,13 +53,7 @@ function parseRemboursements($, getRequestOptions) {
           amount: {
             sel: 'td:nth-child(5),td:nth-child(6)',
             fn: nodes =>
-              sumBy(nodes, node =>
-                convertAmount(
-                  $(node)
-                    .text()
-                    .trim()
-                )
-              )
+              sumBy(nodes, node => convertAmount($(node).text().trim()))
           }
         })
 
@@ -72,9 +64,7 @@ function parseRemboursements($, getRequestOptions) {
           // Line with data
           const originalAmount = convertAmount(data[2])
           const originalDate = moment(
-            $(this)
-              .find('#datePrestation')
-              .val(),
+            $(this).find('#datePrestation').val(),
             'x'
           )
           // unique id for the prestation line. May be useful
@@ -129,8 +119,7 @@ function convertAmount(amount) {
   if (!amount) {
     return amount
   }
-  amount = amount.replace(' €', '').replace(',', '.')
-  return parseFloat(amount)
+  return parseFloat(amount.replace(' €', '').replace(',', '.'))
 }
 
 function tokenify(number) {

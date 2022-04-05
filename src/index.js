@@ -121,6 +121,7 @@ function logIn(fields, resp) {
         log('error', body, 'bad login response')
         throw new Error(errors.LOGIN_FAILED)
       }
+      return
     })
 }
 
